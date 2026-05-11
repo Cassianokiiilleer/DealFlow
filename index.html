@@ -3,12 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intelligence Report VC 2026 - Pipeline Consolidado</title>
-    <!-- Palette: Slate & Emerald (Professional VC Aesthetic) -->
-    <!-- Application Structure Plan: Dashboard de Due Diligence Expandido. 
-         Inclui 11 ativos divididos por verticais: Saúde, Agro, Energia e Circularidade.
-         Layout master-detail com radar de maturidade técnica e tese de impacto intrínseco.
-    -->
+    <title>Intelligence Report VC 2026 - Pipeline Segmentado</title>
+    <!-- Estética Original: Inter + Slate & Emerald -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -20,7 +16,12 @@
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .active-asset { border-left: 4px solid #10b981; background-color: #f0fdf4; transform: translateX(4px); }
         .glass-header { backdrop-filter: blur(12px); background-color: rgba(255, 255, 255, 0.9); }
-        .vertical-tag { writing-mode: vertical-rl; transform: rotate(180deg); }
+        
+        .filter-btn-active { 
+            background-color: #0f172a; 
+            color: white; 
+            border-color: #0f172a;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen">
@@ -29,32 +30,48 @@
     <header class="glass-header border-b border-slate-200 py-4 px-6 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <div class="bg-emerald-600 text-white w-10 h-10 rounded-lg flex items-center justify-center font-black shadow-lg shadow-emerald-200">VC</div>
+                <div class="bg-slate-900 text-white w-10 h-10 rounded-lg flex items-center justify-center font-black shadow-lg">VC</div>
                 <div>
                     <h1 class="text-lg font-extrabold text-slate-800 tracking-tight">Intelligence Report 2026</h1>
-                    <p class="text-[10px] text-emerald-600 font-black uppercase tracking-[0.2em]">Full Pipeline: 11 Ativos de Impacto</p>
+                    <p class="text-[10px] text-emerald-600 font-black uppercase tracking-[0.2em]">Pipeline Consolidado: 11 Ativos</p>
                 </div>
             </div>
             <div class="flex items-center gap-4">
                 <div class="hidden md:block text-right border-r border-slate-200 pr-4">
-                    <p class="text-[9px] text-slate-400 font-bold uppercase">Mapeamento Geográfico</p>
-                    <p class="text-xs font-bold text-slate-600">Deep Tech & Bioeconomia</p>
+                    <p class="text-[9px] text-slate-400 font-bold uppercase">Análise de Impacto</p>
+                    <p class="text-xs font-bold text-slate-600">Standard Layout (28/04)</p>
                 </div>
+                <span class="bg-slate-900 text-white text-[10px] font-black px-3 py-1.5 rounded uppercase cursor-pointer hover:bg-slate-800 transition-all">Exportar Dados</span>
             </div>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        <!-- Lista de Negócios (Pipeline) -->
+        <!-- Sidebar: Pipeline com Segmentação -->
         <aside class="lg:col-span-4 flex flex-col gap-4">
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[750px]">
-                <div class="p-4 border-b border-slate-100 flex justify-between items-center">
-                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest">Pipeline Estratégico</h3>
-                    <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-1 rounded-full">11 Deals</span>
+                
+                <!-- Segmentadores de Reunião -->
+                <div class="p-4 bg-slate-50 border-b border-slate-100">
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3">Status da Reunião</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="filterStartups('inicial')" id="btn-inicial" class="filter-btn-active text-[10px] font-black uppercase py-2 px-1 rounded-lg border border-slate-200 transition-all">
+                            Nível Inicial
+                        </button>
+                        <button onclick="filterStartups('interesse')" id="btn-interesse" class="bg-white text-slate-500 text-[10px] font-black uppercase py-2 px-1 rounded-lg border border-slate-200 hover:border-slate-400 transition-all">
+                            Maior Interesse
+                        </button>
+                    </div>
                 </div>
+
+                <div class="px-4 py-3 border-b border-slate-50 flex justify-between items-center">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Ativos Filtrados</h3>
+                    <span id="count-badge" class="bg-slate-900 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">0</span>
+                </div>
+
                 <div id="startupList" class="flex-grow overflow-y-auto custom-scroll p-2 space-y-2">
-                    <!-- Dinâmico via JS -->
+                    <!-- JS gerará os itens aqui -->
                 </div>
             </div>
         </aside>
@@ -63,84 +80,58 @@
         <section class="lg:col-span-8">
             <div id="memoContent" class="bg-white rounded-2xl border border-slate-200 shadow-sm h-full flex flex-col overflow-hidden min-h-[750px]">
                 
-                <!-- Empty State -->
                 <div id="emptyState" class="flex-grow flex flex-col items-center justify-center p-20 text-center">
-                    <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center text-4xl mb-6 grayscale opacity-50">📂</div>
-                    <h2 class="text-xl font-bold text-slate-800">Selecione um Ativo para Análise</h2>
-                    <p class="text-sm text-slate-400 max-w-xs mx-auto mt-2 italic">Acesso restrito a dados de patentes, tração TRL e ressalvas críticas do comitê 2026.</p>
+                    <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center text-4xl mb-6 opacity-50">📊</div>
+                    <h2 class="text-xl font-bold text-slate-800">Selecione um Ativo</h2>
+                    <p class="text-sm text-slate-400 mt-2 italic">Acesse as métricas de TRL e teses de impacto detalhadas para esta categoria.</p>
                 </div>
 
-                <!-- Detalhes do Memo -->
                 <div id="memoDetails" class="hidden h-full flex flex-col">
-                    <!-- Topo -->
-                    <div class="p-6 lg:p-8 border-b border-slate-100 bg-slate-50/30 flex flex-wrap justify-between items-start gap-4">
-                        <div class="flex-grow">
-                            <div class="flex items-center gap-2 mb-3">
-                                <span id="memoVertical" class="bg-slate-900 text-white text-[9px] font-black px-2 py-1 rounded uppercase tracking-tighter"></span>
-                            </div>
+                    <div class="p-6 lg:p-8 border-b border-slate-100 bg-slate-50/30 flex justify-between items-start">
+                        <div>
+                            <span id="memoVertical" class="bg-slate-900 text-white text-[9px] font-black px-2 py-1 rounded uppercase mb-2 inline-block"></span>
                             <h2 id="memoTitle" class="text-4xl font-black text-slate-900 tracking-tighter leading-none mb-2"></h2>
-                            <p id="memoSector" class="text-slate-500 text-sm font-semibold italic"></p>
+                            <p id="memoSector" class="text-emerald-600 text-xs font-bold uppercase tracking-wider"></p>
                         </div>
-                        <div class="flex flex-col gap-2">
-                            <div class="bg-white border border-slate-200 p-3 rounded-xl shadow-sm text-center min-w-[120px]">
-                                <p class="text-[9px] font-bold text-slate-400 uppercase">Estágio 2026</p>
-                                <p id="memoStage" class="text-sm font-black text-slate-700"></p>
-                            </div>
+                        <div class="text-center bg-white border border-slate-200 p-3 rounded-xl min-w-[120px]">
+                            <p class="text-[9px] font-bold text-slate-400 uppercase">Estágio</p>
+                            <p id="memoStage" class="text-sm font-black text-slate-700"></p>
                         </div>
                     </div>
 
-                    <!-- Corpo -->
                     <div class="p-6 lg:p-8 overflow-y-auto custom-scroll flex-grow space-y-10">
-                        
-                        <!-- Resumo e Radar -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                             <div class="space-y-6">
                                 <div>
-                                    <h4 class="text-[10px] font-black text-emerald-600 uppercase tracking-[0.2em] mb-2 flex items-center gap-2">
-                                        <i class="fas fa-bullseye"></i> A Tese de Impacto
-                                    </h4>
+                                    <h4 class="text-[10px] font-black text-emerald-600 uppercase mb-2 tracking-widest">A Tese de Impacto</h4>
                                     <p id="memoThesis" class="text-sm text-slate-700 leading-relaxed"></p>
                                 </div>
-                                <div class="bg-emerald-50/50 p-5 rounded-2xl border-l-4 border-emerald-500">
-                                    <h4 class="text-[10px] font-black text-emerald-800 uppercase mb-2">Barreira Técnica (Moat)</h4>
-                                    <p id="memoMoat" class="text-sm text-slate-800 font-medium leading-relaxed"></p>
+                                <div class="bg-emerald-50 p-5 rounded-xl border-l-4 border-emerald-500">
+                                    <h4 class="text-[10px] font-black text-emerald-800 uppercase mb-2">Moat Principal</h4>
+                                    <p id="memoMoat" class="text-xs text-slate-800 font-medium"></p>
                                 </div>
                             </div>
                             <div class="bg-white border border-slate-50 p-4 rounded-3xl shadow-inner">
-                                <h4 class="text-[10px] font-black text-slate-400 uppercase mb-6 text-center">Score de Due Diligence</h4>
                                 <div class="chart-container">
                                     <canvas id="radarChart"></canvas>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Grid de Dados -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-slate-100">
                             <div>
-                                <h4 class="text-[10px] font-black text-blue-600 uppercase mb-3">Tração e Validação</h4>
-                                <p id="memoTraction" class="text-xs text-slate-600 leading-relaxed bg-blue-50/30 p-4 rounded-xl"></p>
+                                <h4 class="text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest">Tração</h4>
+                                <p id="memoTraction" class="text-xs text-slate-600 leading-relaxed"></p>
                             </div>
                             <div>
-                                <h4 class="text-[10px] font-black text-purple-600 uppercase mb-3">Capital Intelectual / Founders</h4>
-                                <p id="memoFounders" class="text-xs text-slate-600 leading-relaxed bg-purple-50/30 p-4 rounded-xl"></p>
+                                <h4 class="text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest">Ressalvas</h4>
+                                <p id="memoRisks" class="text-xs text-slate-600 leading-relaxed"></p>
                             </div>
                         </div>
 
-                        <!-- Riscos -->
-                        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6">
-                            <h4 class="text-[10px] font-black text-amber-700 uppercase mb-3 flex items-center gap-2">
-                                <span class="bg-amber-200 w-4 h-4 rounded-full flex items-center justify-center text-[8px]">!</span> Ressalvas e Riscos Críticos
-                            </h4>
-                            <p id="memoRisks" class="text-xs text-amber-900 leading-relaxed font-medium"></p>
-                        </div>
-
-                        <!-- Veredito -->
-                        <div class="bg-slate-900 rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl">
-                            <div class="relative z-10">
-                                <h4 class="text-[10px] font-black text-emerald-400 uppercase tracking-[0.3em] mb-3">Investment Verdict</h4>
-                                <p id="memoVerdict" class="text-base text-slate-100 leading-relaxed mb-6 font-medium italic"></p>
-                            </div>
-                            <div class="absolute -right-8 -bottom-8 text-[120px] font-black text-white/[0.03] italic pointer-events-none">2026</div>
+                        <div class="bg-slate-900 rounded-2xl p-8 text-white">
+                            <h4 class="text-[10px] font-black text-emerald-400 uppercase mb-3 tracking-[0.2em]">Investment Verdict</h4>
+                            <p id="memoVerdict" class="text-sm text-slate-100 italic font-medium leading-relaxed"></p>
                         </div>
                     </div>
                 </div>
@@ -150,185 +141,69 @@
 
     <script>
         const startups = [
-            {
-                id: 'imunotera',
-                nome: "Imunotera Soluções",
-                setor: "Saúde / Biotecnologia",
-                vertical: "SAÚDE",
-                tese: "Combate ao câncer induzido por HPV via plataforma Act-Tera, treinando o sistema imunológico para eliminar células tumorais sem quimioterapia. Impacto na redução drástica de cirurgias e morbidade.",
-                moat: "Proteína recombinante TERAH-7 desenvolvida na USP. Patentes robustas contra genéricos e alta complexidade de engenharia molecular.",
-                tracao: "PIPE Fase 3 FAPESP. Resultados promissores com quimioterapia e vacinas de DNA. Captou R$ 1.6M até o momento.",
-                founders: "Luana Raposo de Melo Moraes Aps (PhD USP) + Time sênior de imunologistas com experiência internacional.",
-                riscos: "Risco clínico de transição animal-humano. Necessidade de capital intensivo para ensaios clínicos de Fase II/III.",
-                veredito: "Ativo de impacto forte onde a cura é o motor do lucro. Ciência de base de altíssima qualidade pronta para o mercado global.",
-                scores: [10, 6, 9, 10, 7],
-                estagio: "Series A (Target)"
-            },
-            {
-                id: 'ideelab',
-                nome: "IdeeLab Biotecnologia",
-                setor: "Agro / Biofábrica",
-                vertical: "AGRO",
-                tese: "Infraestrutura crítica para a transição química-biológica no agro. Viabiliza defensivos biológicos de alta escala reduzindo dependência de agrotóxicos sintéticos.",
-                moat: "Biofábrica industrial com 6M litros/ano. Parceria estratégica com Ginkgo Bioworks. Domínio de biologia sistêmica para modo de ação molecular.",
-                tracao: "Investimento de R$ 30M em unidade industrial (Cambé-PR). Parceria com multinacional ICL. PIPE Fase 3 FAPESP.",
-                founders: "Dr. Ronaldo Dalio (PhD Munique) e Prof. Dr. Sérgio Pascholati (Purdue). Execução industrial acima da média.",
-                riscos: "Custo de ociosidade da fábrica no modelo CDMO/BaaS e estabilidade biológica em biorreatores de escala massiva.",
-                veredito: "A infraestrutura necessária para a nova agricultura sustentável. Oportunidade de captura de valor em toda a cadeia de bioinsumos.",
-                scores: [9, 9, 9, 9, 8],
-                estagio: "Growth"
-            },
-            {
-                id: 'mabe',
-                nome: "MABE Bio",
-                setor: "GreenTech / Materiais",
-                vertical: "CIRCULAR",
-                tese: "Substituição de couro animal e sintéticos petroquímicos pelo Bio Angico. Incentiva reflorestamento ativo e sequestro de carbono através de espécies nativas.",
-                moat: "Fórmula proprietária de polimerização natural e resinas biodegradáveis. Propriedade intelectual sobre o processamento de vagens nativas.",
-                tracao: "R$ 1M pre-seed (Antler/Anjos do Brasil). Vencedora ClimateLaunchpad. Testes industriais com marcas premium de moda.",
-                founders: "Marina Belintani (CTO/Design) e Rachel Maranhão (CEO). Equilíbrio entre rigor científico e visão de mercado premium.",
-                riscos: "Competitividade de preço frente ao couro bovino e uniformidade das propriedades físicas do material entre safras.",
-                veredito: "Ideal para o investidor focado em 'Bioeconomia do Conhecimento'. Material rastreável e regenerativo para o luxo global.",
-                scores: [8, 7, 8, 10, 6],
-                estagio: "Seed"
-            },
-            {
-                id: 'agrio',
-                nome: "Agrio Tecnologia",
-                setor: "Agro / Hardware-AI",
-                vertical: "AGRO",
-                tese: "Pulverização seletiva 'See-and-Spray'. Identifica plantas daninhas e aplica herbicida apenas onde necessário, reduzindo custos em até 80%.",
-                moat: "IA de visão computacional de ultra-latência integrada a hardware robusto para operação em alta velocidade em terrenos irregulares.",
-                tracao: "PIPE Fase 3 FAPESP. Validação em campo comprovada com ganhos imediatos de margem para o produtor.",
-                founders: "André Orlandi de Oliveira. Foco em transformar pesquisa acadêmica em máquinas agrícolas prontas para escala industrial.",
-                riscos: "Competição direta com gigantes (John Deere). Necessidade de rede de assistência técnica capilarizada no Brasil.",
-                veredito: "Eficiência pura. Em um agro de margens apertadas, qualquer tecnologia que corta 80% do custo químico é prioridade de compra.",
-                scores: [8, 8, 8, 9, 9],
-                estagio: "Seed / Series A"
-            },
-            {
-                id: 'floe',
-                nome: "Floe (Dr. Freeze)",
-                setor: "MedTech / Urgência",
-                vertical: "SAÚDE",
-                tese: "Preservação neurológica pós-trauma/AVC via resfriamento seletivo portátil. Minimiza sequelas permanentes na 'janela de ouro' do atendimento.",
-                moat: "Device médico Classe III portátil. Engenharia baseada em doutorado USP com resfriamento nasofaríngeo focado e seguro.",
-                tracao: "PIPE Fase 3 FAPESP para unidade portátil. Portfólio já conta com soluções para cardiologia e oncologia.",
-                founders: "Médicos PhDs (Dr. Bernardo Paiva e Dr. Raphael Ferreira) com vivência em urgência hospitalar e gestão.",
-                riscos: "Risco regulatório altíssimo (ANVISA) e barreira de adoção em protocolos públicos de urgência (SAMU).",
-                veredito: "Uma pérola da Deep Tech nacional. Solução de sobrevivência crítica para um mundo com população em envelhecimento.",
-                scores: [9, 7, 10, 10, 7],
-                estagio: "Seed"
-            },
-            {
-                id: 'eforth',
-                nome: "E-Forth",
-                setor: "E-Mobility / Ativos",
-                vertical: "ENERGIA",
-                tese: "Viabiliza o mercado secundário de veículos elétricos através da certificação digital e garantia de baterias, mitigando risco de desvalorização.",
-                moat: "Algoritmos de predição de State-of-Health (SoH) e infraestrutura de garantia baseada em dados reais de telemetria.",
-                tracao: "Parcerias com frotistas e seguradoras. Foco no ciclo de vida de baterias LFP e NCM.",
-                founders: "Especialistas em energia e mercado automotivo com foco em fintech e garantias.",
-                riscos: "Dependência da velocidade de adoção de EVs no Brasil e padronização de dados das montadoras.",
-                veredito: "A infraestrutura de confiança necessária para a e-mobilidade. Resolve o maior medo do comprador de EV usado.",
-                scores: [7, 8, 8, 9, 8],
-                estagio: "Seed"
-            },
-            {
-                id: 'recicli',
-                nome: "Recicli",
-                setor: "Circular / Mineração",
-                vertical: "CIRCULAR",
-                tese: "Mineração urbana de resíduos eletrônicos via biometalurgia. Extração de metais nobres usando microrganismos em vez de ácidos tóxicos.",
-                moat: "Consórcios bacterianos patenteados e baixo custo de processamento (OPEX) comparado à pirólise tradicional.",
-                tracao: "Planta piloto operacional. Foco em Ouro, Prata e Paládio de placas de circuito impresso.",
-                founders: "Biólogos e engenheiros de materiais focados em processos sustentáveis de extração.",
-                riscos: "Logística reversa fragmentada e volatilidade do preço de commodities metálicas no mercado global.",
-                veredito: "Mineração de baixo carbono. Essencial para a independência mineral em um mundo de cadeias de suprimento instáveis.",
-                scores: [8, 6, 8, 10, 7],
-                estagio: "Pre-Seed"
-            },
-            {
-                id: 'ionycleaf',
-                nome: "IonycLeaf",
-                setor: "Energia / Deep Tech",
-                vertical: "ENERGIA",
-                tese: "Desenvolvimento de baterias de Silício-Enxofre com densidade energética 2x superior às de Lítio, sem uso de metais críticos escassos.",
-                moat: "Propriedade intelectual sobre eletrólitos sólidos e estabilização de ânodos de silício para ciclos longos.",
-                tracao: "Validação em laboratório TRL 4/5. Interesse de fabricantes de drones e aviação regional (eVTOL).",
-                founders: "Pesquisadores de ponta em eletroquímica com passagens por centros de excelência globais.",
-                riscos: "Risco tecnológico radical (degradação do ânodo) e escala de fabricação de novos materiais químicos.",
-                veredito: "High Risk, Massive Reward. Se atingir TRL 7, torna-se alvo de aquisição por gigantes globais de tecnologia.",
-                scores: [10, 4, 9, 9, 8],
-                estagio: "Pre-Seed / R&D"
-            },
-            {
-                id: 'enerzon',
-                nome: "Enerzon",
-                setor: "Energia / Infra",
-                vertical: "ENERGIA",
-                tese: "Rede inteligente de carregamento ultrarrápido para frotas comerciais, integrada a microrredes de energia renovável local.",
-                moat: "Software de gestão de carga dinâmico que evita picos de demanda e custos elevados de infraestrutura de rede.",
-                tracao: "Contratos firmados com operadores logísticos. Expansão em rodovias estratégicas.",
-                founders: "Engenheiros eletricistas e ex-executivos do setor de energia (Utilities).",
-                riscos: "Alto CAPEX de instalação e dependência de marcos regulatórios de geração distribuída.",
-                veredito: "O 'gasoline station' do futuro. Tese de infraestrutura robusta com fluxo de caixa previsível no longo prazo.",
-                scores: [7, 8, 9, 8, 9],
-                estagio: "Series A"
-            },
-            {
-                id: 'gsrbaterias',
-                nome: "GSR Baterias",
-                setor: "Energy / Circular",
-                vertical: "CIRCULAR",
-                tese: "Recondicionamento e 'Second Life' para baterias industriais de chumbo e lítio, estendendo vida útil e reduzindo descarte.",
-                moat: "Processo químico de des-sulfatação proprietário e laboratório de diagnóstico de células único no país.",
-                tracao: "Faturamento recorrente com grandes centros logísticos e operadoras de empilhadeiras.",
-                founders: "Técnicos especialistas em baterias com visão empreendedora voltada para eficiência de custos.",
-                riscos: "Avanço tecnológico que pode tornar tecnologias antigas obsoletas rapidamente.",
-                veredito: "Efficiency-first na veia. Entrega economia imediata para a logística enquanto reduz resíduos perigosos.",
-                scores: [6, 10, 7, 9, 8],
-                estagio: "Operacional / Bootstrapped"
-            },
-            {
-                id: 'biopulse',
-                nome: "BioPulse",
-                setor: "Agro / Biotecnologia",
-                vertical: "AGRO",
-                tese: "Bioestimulantes baseados em microalgas para regeneração de solo e resistência a estresses climáticos (seca/calor).",
-                moat: "Cepas de microalgas isoladas em biomas brasileiros e tecnologia de aplicação via drone de baixo volume.",
-                tracao: "Pilotos em cana-de-açúcar e milho mostrando aumento de produtividade de 12% sob estresse hídrico.",
-                founders: "PhDs em microbiologia agrícola e especialistas em tecnologias de aplicação aérea.",
-                riscos: "Barreira de aceitação do produtor tradicional e concorrência com grandes agroquímicas lançando biológicos.",
-                veredito: "Resiliência climática para o solo tropical. Aposta estratégica para garantir produtividade em cenários climáticos incertos.",
-                scores: [8, 7, 9, 10, 7],
-                estagio: "Seed"
-            }
+            // Nível Inicial
+            { id: 'imunotera', nivel: 'inicial', nome: "Imunotera Soluções", setor: "Health / BioTech", vertical: "SAÚDE", tese: "Cura do câncer HPV via plataforma Act-Tera.", moat: "Proteína TERAH-7 patenteada (USP).", tracao: "PIPE FAPESP Fase 3.", riscos: "Barreira regulatória e capital clínico.", veredito: "Prioridade em Deep Tech Oncológica.", scores: [9, 6, 9, 10, 7], estagio: "Series A" },
+            { id: 'ideelab', nivel: 'inicial', nome: "IdeeLab Biotec", setor: "Agro / CDMO", vertical: "AGRO", tese: "Escalabilidade de bioinsumos para transição verde no campo.", moat: "Biofábrica industrial (6M L/ano).", tracao: "Unidade Cambé operacional.", riscos: "Sazonalidade e custo fixo fabril.", veredito: "Infraestrutura crítica para o Agro 5.0.", scores: [9, 9, 9, 9, 8], estagio: "Growth" },
+            { id: 'mabe', nivel: 'inicial', nome: "MABE Bio", setor: "New Materials", vertical: "CIRCULAR", tese: "Couro vegetal regenerativo de Bio Angico.", moat: "Polimerização vegetal própria.", tracao: "Testes com marcas de luxo globais.", riscos: "Uniformidade de material em escala.", veredito: "Liderança em materiais biossintetizados.", scores: [8, 7, 8, 10, 6], estagio: "Seed" },
+            { id: 'agrio', nivel: 'inicial', nome: "Agrio Tecnologia", setor: "Agro / AI", vertical: "AGRO", tese: "Visão computacional para redução de 80% em herbicidas.", moat: "IA de latência ultra-baixa embarcada.", tracao: "ROI validado diretamente no produtor.", riscos: "Assistência técnica capilarizada.", veredito: "Eficiência financeira com impacto ambiental.", scores: [8, 8, 8, 9, 9], estagio: "Seed" },
+            { id: 'floe', nivel: 'inicial', nome: "Floe (Dr. Freeze)", setor: "MedTech", vertical: "SAÚDE", tese: "Resfriamento neurológico portátil pós-AVC.", moat: "Device médico Classe III patenteado.", tracao: "Validação em hospitais de urgência.", riscos: "Integração em protocolos públicos.", veredito: "Ativo de preservação de vida crítica.", scores: [9, 7, 10, 10, 7], estagio: "Seed" },
+            { id: 'ionycleaf', nivel: 'inicial', nome: "IonycLeaf", setor: "Energy / DeepTech", vertical: "ENERGIA", tese: "Baterias de Silício-Enxofre (dobro de autonomia).", moat: "Eletrólitos sólidos sem metais críticos.", tracao: "TRL 4 com foco aeroespacial.", riscos: "Gap de estabilidade para escala.", veredito: "Aposta radical em densidade energética.", scores: [10, 4, 9, 9, 8], estagio: "R&D" },
+            { id: 'enerzon', nivel: 'inicial', nome: "Enerzon", setor: "Energy / Infra", vertical: "ENERGIA", tese: "Recarga ultrarrápida inteligente para frotas B2B.", moat: "Software de gestão de carga de rede.", tracao: "Pipeline de rodovias logísticas.", riscos: "CAPEX inicial intensivo.", veredito: "Eletroposto inteligente do futuro.", scores: [7, 8, 9, 8, 9], estagio: "Series A" },
+            
+            // Maior Interesse
+            { id: 'eforth', nivel: 'interesse', nome: "E-Forth", setor: "E-Mobility", vertical: "ENERGIA", tese: "Certificação de valor para baterias de veículos usados.", moat: "Predição de State-of-Health via dados reais.", tracao: "Parceria com frotas comerciais.", riscos: "Curva de adoção de EVs no Brasil.", veredito: "Market maker da mobilidade elétrica.", scores: [7, 8, 8, 9, 8], estagio: "Seed" },
+            { id: 'recicli', nivel: 'interesse', nome: "Recicli", setor: "Circular / Bio", vertical: "CIRCULAR", tese: "Extração de metais nobres via biometalurgia bacteriana.", moat: "Bactérias customizadas p/ mineração urbana.", tracao: "Planta piloto operacional.", riscos: "Estabilidade do preço dos metais.", veredito: "Mineração de baixíssimo carbono.", scores: [8, 6, 8, 10, 7], estagio: "Pre-Seed" },
+            { id: 'gsr', nivel: 'interesse', nome: "GSR Baterias", setor: "Circular / Energy", vertical: "CIRCULAR", tese: "Second Life p/ baterias industriais.", moat: "Processo químico proprietário de recuperação.", tracao: "Faturamento recorrente em logística.", riscos: "Obsolescência técnica do chumbo.", veredito: "Eficiência de ativos imediata.", scores: [6, 10, 7, 9, 8], estagio: "Operacional" },
+            { id: 'biopulse', nivel: 'interesse', nome: "BioPulse", setor: "Agro / Bio", vertical: "AGRO", tese: "Bioestimulantes de microalgas p/ resiliência climática.", moat: "Cepas isoladas de biomas nacionais.", tracao: "Validação em cana e milho.", riscos: "Logística de produto vivo.", veredito: "Defesa biológica contra seca.", scores: [8, 7, 9, 10, 7], estagio: "Seed" }
         ];
 
         let radarChart = null;
+        let currentFilter = 'inicial';
 
-        function init() {
+        function filterStartups(nivel) {
+            currentFilter = nivel;
+            
+            // Atualizar Botões
+            const btnInicial = document.getElementById('btn-inicial');
+            const btnInteresse = document.getElementById('btn-interesse');
+            
+            if(nivel === 'inicial') {
+                btnInicial.className = "filter-btn-active text-[10px] font-black uppercase py-2 px-1 rounded-lg border border-slate-200 transition-all";
+                btnInteresse.className = "bg-white text-slate-500 text-[10px] font-black uppercase py-2 px-1 rounded-lg border border-slate-200 hover:border-slate-400 transition-all";
+            } else {
+                btnInteresse.className = "filter-btn-active text-[10px] font-black uppercase py-2 px-1 rounded-lg border border-slate-200 transition-all";
+                btnInicial.className = "bg-white text-slate-500 text-[10px] font-black uppercase py-2 px-1 rounded-lg border border-slate-200 hover:border-slate-400 transition-all";
+            }
+
             renderList();
+            
+            // Resetar View do Memo se mudar filtro
+            document.getElementById('emptyState').classList.remove('hidden');
+            document.getElementById('memoDetails').classList.add('hidden');
         }
 
         function renderList() {
             const list = document.getElementById('startupList');
-            startups.forEach(s => {
+            list.innerHTML = "";
+            
+            const filtered = startups.filter(s => s.nivel === currentFilter);
+            document.getElementById('count-badge').innerText = filtered.length;
+
+            filtered.forEach(s => {
                 const item = document.createElement('div');
-                item.className = "p-4 border border-slate-100 rounded-xl cursor-pointer hover:border-emerald-300 transition-all duration-300 group bg-white shadow-sm hover:shadow-md";
+                item.className = "p-4 border border-slate-100 rounded-xl cursor-pointer hover:border-emerald-300 bg-white shadow-sm transition-all";
                 item.id = `item-${s.id}`;
                 item.onclick = () => showMemo(s.id);
                 item.innerHTML = `
                     <div class="flex justify-between items-start mb-2">
-                        <h4 class="text-xs font-black text-slate-800 group-hover:text-emerald-700">${s.nome}</h4>
-                        <span class="text-[8px] font-black bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded uppercase tracking-tighter">${s.vertical}</span>
+                        <h4 class="text-[10px] font-black text-slate-800 uppercase leading-tight">${s.nome}</h4>
+                        <span class="text-[8px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">${s.vertical}</span>
                     </div>
                     <div class="flex items-center gap-2">
                          <div class="h-1 flex-grow bg-slate-50 rounded-full overflow-hidden">
                             <div class="h-full bg-emerald-500" style="width: ${((s.scores.reduce((a,b)=>a+b)/5)*10)}%"></div>
                          </div>
-                         <span class="text-[9px] font-bold text-slate-400 italic">${s.estagio}</span>
+                         <span class="text-[8px] font-bold text-slate-400">${s.estagio}</span>
                     </div>
                 `;
                 list.appendChild(item);
@@ -337,7 +212,6 @@
 
         function showMemo(id) {
             const s = startups.find(item => item.id === id);
-            
             document.getElementById('emptyState').classList.add('hidden');
             document.getElementById('memoDetails').classList.remove('hidden');
             document.querySelectorAll('#startupList > div').forEach(el => el.classList.remove('active-asset'));
@@ -350,7 +224,6 @@
             document.getElementById('memoThesis').innerText = s.tese;
             document.getElementById('memoMoat').innerText = s.moat;
             document.getElementById('memoTraction').innerText = s.tracao;
-            document.getElementById('memoFounders').innerText = s.founders;
             document.getElementById('memoRisks').innerText = s.riscos;
             document.getElementById('memoVerdict').innerText = s.veredito;
 
@@ -360,44 +233,26 @@
         function updateChart(s) {
             const ctx = document.getElementById('radarChart').getContext('2d');
             if (radarChart) radarChart.destroy();
-
             radarChart = new Chart(ctx, {
                 type: 'radar',
                 data: {
-                    labels: ['Moat Técnico', 'Tração', 'Time', 'Impacto', 'Escala'],
+                    labels: ['Técnica', 'Tração', 'Time', 'Impacto', 'Escala'],
                     datasets: [{
-                        label: 'Score Ativo',
                         data: s.scores,
-                        backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
                         borderColor: '#10b981',
-                        pointBackgroundColor: '#10b981',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: '#10b981',
-                        borderWidth: 3
-                    }, {
-                        label: 'Benchmark',
-                        data: [7, 6, 7, 7, 7],
-                        backgroundColor: 'rgba(148, 163, 184, 0.05)',
-                        borderColor: 'rgba(148, 163, 184, 0.3)',
-                        borderWidth: 1,
-                        borderDash: [5, 5]
+                        borderWidth: 2,
+                        pointBackgroundColor: '#10b981'
                     }]
                 },
                 options: {
-                    scales: {
-                        r: {
-                            min: 0, max: 10, ticks: { display: false },
-                            pointLabels: { font: { size: 10, weight: '900', family: 'Inter' }, color: '#64748b' }
-                        }
-                    },
+                    scales: { r: { min: 0, max: 10, ticks: { display: false }, pointLabels: { font: { weight: 'bold', size: 9 } } } },
                     plugins: { legend: { display: false } },
                     maintainAspectRatio: false
                 }
             });
         }
-
-        window.onload = init;
+        window.onload = renderList;
     </script>
 </body>
 </html>
