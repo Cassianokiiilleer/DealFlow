@@ -52,7 +52,6 @@
         <aside class="lg:col-span-4 flex flex-col gap-4">
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[750px]">
                 
-                <!-- Segmentadores de Reunião -->
                 <div class="p-4 bg-slate-50 border-b border-slate-100">
                     <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3">Status da Reunião</p>
                     <div class="grid grid-cols-2 gap-2">
@@ -71,7 +70,7 @@
                 </div>
 
                 <div id="startupList" class="flex-grow overflow-y-auto custom-scroll p-2 space-y-2">
-                    <!-- JS gerará os itens aqui -->
+                    <!-- Dinâmico -->
                 </div>
             </div>
         </aside>
@@ -121,16 +120,16 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-slate-100">
                             <div>
                                 <h4 class="text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest">Tração</h4>
-                                <p id="memoTraction" class="text-xs text-slate-600 leading-relaxed"></p>
+                                <p id="memoTraction" class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-lg"></p>
                             </div>
                             <div>
-                                <h4 class="text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest">Ressalvas</h4>
-                                <p id="memoRisks" class="text-xs text-slate-600 leading-relaxed"></p>
+                                <h4 class="text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest">Time de Founders</h4>
+                                <p id="memoFounders" class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-lg"></p>
                             </div>
                         </div>
 
-                        <div class="bg-slate-900 rounded-2xl p-8 text-white">
-                            <h4 class="text-[10px] font-black text-emerald-400 uppercase mb-3 tracking-[0.2em]">Investment Verdict</h4>
+                        <div class="bg-slate-900 rounded-2xl p-8 text-white relative">
+                            <h4 class="text-[10px] font-black text-emerald-400 uppercase mb-3 tracking-[0.2em]">Investment Verdict & Riscos</h4>
                             <p id="memoVerdict" class="text-sm text-slate-100 italic font-medium leading-relaxed"></p>
                         </div>
                     </div>
@@ -141,20 +140,32 @@
 
     <script>
         const startups = [
-            // Nível Inicial
-            { id: 'imunotera', nivel: 'inicial', nome: "Imunotera Soluções", setor: "Health / BioTech", vertical: "SAÚDE", tese: "Cura do câncer HPV via plataforma Act-Tera.", moat: "Proteína TERAH-7 patenteada (USP).", tracao: "PIPE FAPESP Fase 3.", riscos: "Barreira regulatória e capital clínico.", veredito: "Prioridade em Deep Tech Oncológica.", scores: [9, 6, 9, 10, 7], estagio: "Series A" },
-            { id: 'ideelab', nivel: 'inicial', nome: "IdeeLab Biotec", setor: "Agro / CDMO", vertical: "AGRO", tese: "Escalabilidade de bioinsumos para transição verde no campo.", moat: "Biofábrica industrial (6M L/ano).", tracao: "Unidade Cambé operacional.", riscos: "Sazonalidade e custo fixo fabril.", veredito: "Infraestrutura crítica para o Agro 5.0.", scores: [9, 9, 9, 9, 8], estagio: "Growth" },
-            { id: 'mabe', nivel: 'inicial', nome: "MABE Bio", setor: "New Materials", vertical: "CIRCULAR", tese: "Couro vegetal regenerativo de Bio Angico.", moat: "Polimerização vegetal própria.", tracao: "Testes com marcas de luxo globais.", riscos: "Uniformidade de material em escala.", veredito: "Liderança em materiais biossintetizados.", scores: [8, 7, 8, 10, 6], estagio: "Seed" },
-            { id: 'agrio', nivel: 'inicial', nome: "Agrio Tecnologia", setor: "Agro / AI", vertical: "AGRO", tese: "Visão computacional para redução de 80% em herbicidas.", moat: "IA de latência ultra-baixa embarcada.", tracao: "ROI validado diretamente no produtor.", riscos: "Assistência técnica capilarizada.", veredito: "Eficiência financeira com impacto ambiental.", scores: [8, 8, 8, 9, 9], estagio: "Seed" },
-            { id: 'floe', nivel: 'inicial', nome: "Floe (Dr. Freeze)", setor: "MedTech", vertical: "SAÚDE", tese: "Resfriamento neurológico portátil pós-AVC.", moat: "Device médico Classe III patenteado.", tracao: "Validação em hospitais de urgência.", riscos: "Integração em protocolos públicos.", veredito: "Ativo de preservação de vida crítica.", scores: [9, 7, 10, 10, 7], estagio: "Seed" },
-            { id: 'ionycleaf', nivel: 'inicial', nome: "IonycLeaf", setor: "Energy / DeepTech", vertical: "ENERGIA", tese: "Baterias de Silício-Enxofre (dobro de autonomia).", moat: "Eletrólitos sólidos sem metais críticos.", tracao: "TRL 4 com foco aeroespacial.", riscos: "Gap de estabilidade para escala.", veredito: "Aposta radical em densidade energética.", scores: [10, 4, 9, 9, 8], estagio: "R&D" },
-            { id: 'enerzon', nivel: 'inicial', nome: "Enerzon", setor: "Energy / Infra", vertical: "ENERGIA", tese: "Recarga ultrarrápida inteligente para frotas B2B.", moat: "Software de gestão de carga de rede.", tracao: "Pipeline de rodovias logísticas.", riscos: "CAPEX inicial intensivo.", veredito: "Eletroposto inteligente do futuro.", scores: [7, 8, 9, 8, 9], estagio: "Series A" },
+            { id: 'imunotera', nivel: 'inicial', nome: "Imunotera Soluções", setor: "Health / BioTech", vertical: "SAÚDE", tese: "Cura do câncer HPV via plataforma Act-Tera.", moat: "Proteína TERAH-7 patenteada (USP).", tracao: "PIPE FAPESP Fase 3.", founders: "Dra. Luana Aps e time sênior de imunologistas.", veredito: "Veredito: Prioridade em Deep Tech Oncológica. Riscos: Tempo regulatório ANVISA e necessidade de alto capital para ensaios clínicos.", scores: [9, 6, 9, 10, 7], estagio: "Series A" },
+            { id: 'ideelab', nivel: 'inicial', nome: "IdeeLab Biotec", setor: "Agro / CDMO", vertical: "AGRO", tese: "Escalabilidade de bioinsumos para transição verde no campo.", moat: "Biofábrica industrial (6M L/ano).", tracao: "Unidade Cambé operacional.", founders: "Dr. Ronaldo Dalio e especialistas em microbiologia industrial.", veredito: "Veredito: Infraestrutura crítica para o Agro 5.0. Riscos: Sazonalidade e necessidade de manutenção de alto volume constante.", scores: [9, 9, 9, 9, 8], estagio: "Growth" },
+            { id: 'mabe', nivel: 'inicial', nome: "MABE Bio", setor: "New Materials", vertical: "CIRCULAR", tese: "Couro vegetal regenerativo de Bio Angico.", moat: "Polimerização vegetal própria.", tracao: "Testes com marcas de luxo globais.", founders: "Marina Belintani e Rachel Maranhão.", veredito: "Veredito: Liderança em materiais biossintetizados. Riscos: Padronização do material e escala de colheita sustentável.", scores: [8, 7, 8, 10, 6], estagio: "Seed" },
+            { id: 'agrio', nivel: 'inicial', nome: "Agrio Tecnologia", setor: "Agro / AI", vertical: "AGRO", tese: "Visão computacional para redução de 80% em herbicidas.", moat: "IA de latência ultra-baixa embarcada.", tracao: "ROI validado diretamente no produtor.", founders: "André Orlandi de Oliveira e time técnico.", veredito: "Veredito: Eficiência financeira com impacto ambiental. Riscos: Concorrência com OEMs e assistência capilarizada.", scores: [8, 8, 8, 9, 9], estagio: "Seed" },
+            { id: 'floe', nivel: 'inicial', nome: "Floe (Dr. Freeze)", setor: "MedTech", vertical: "SAÚDE", tese: "Resfriamento neurológico portátil pós-AVC.", moat: "Device médico Classe III patenteado.", tracao: "Validação em hospitais de urgência.", founders: "Médicos PhDs com experiência em urgência.", veredito: "Veredito: Ativo de preservação de vida crítica. Riscos: Adoção em protocolos públicos e barreiras de entrada no SUS.", scores: [9, 7, 10, 10, 7], estagio: "Seed" },
+            { id: 'ionycleaf', nivel: 'inicial', nome: "IonycLeaf", setor: "Energy / DeepTech", vertical: "ENERGIA", tese: "Baterias de Silício-Enxofre (dobro de autonomia).", moat: "Eletrólitos sólidos sem metais críticos.", tracao: "TRL 4 com foco aeroespacial.", founders: "PhDs em eletroquímica internacional.", veredito: "Veredito: Aposta radical em densidade energética. Riscos: Estabilidade do ânodo e gap tecnológico para escala.", scores: [10, 4, 9, 9, 8], estagio: "R&D" },
+            { id: 'enerzon', nivel: 'inicial', nome: "Enerzon", setor: "Energy / Infra", vertical: "ENERGIA", tese: "Recarga ultrarrápida inteligente para frotas B2B.", moat: "Software de gestão de carga de rede.", tracao: "Pipeline de rodovias logísticas.", founders: "Engenheiros do setor elétrico (Utilities).", veredito: "Veredito: Eletroposto inteligente do futuro. Riscos: CAPEX intensivo e regulação de rede.", scores: [7, 8, 9, 8, 9], estagio: "Series A" },
             
-            // Maior Interesse
-            { id: 'eforth', nivel: 'interesse', nome: "E-Forth", setor: "E-Mobility", vertical: "ENERGIA", tese: "Certificação de valor para baterias de veículos usados.", moat: "Predição de State-of-Health via dados reais.", tracao: "Parceria com frotas comerciais.", riscos: "Curva de adoção de EVs no Brasil.", veredito: "Market maker da mobilidade elétrica.", scores: [7, 8, 8, 9, 8], estagio: "Seed" },
-            { id: 'recicli', nivel: 'interesse', nome: "Recicli", setor: "Circular / Bio", vertical: "CIRCULAR", tese: "Extração de metais nobres via biometalurgia bacteriana.", moat: "Bactérias customizadas p/ mineração urbana.", tracao: "Planta piloto operacional.", riscos: "Estabilidade do preço dos metais.", veredito: "Mineração de baixíssimo carbono.", scores: [8, 6, 8, 10, 7], estagio: "Pre-Seed" },
-            { id: 'gsr', nivel: 'interesse', nome: "GSR Baterias", setor: "Circular / Energy", vertical: "CIRCULAR", tese: "Second Life p/ baterias industriais.", moat: "Processo químico proprietário de recuperação.", tracao: "Faturamento recorrente em logística.", riscos: "Obsolescência técnica do chumbo.", veredito: "Eficiência de ativos imediata.", scores: [6, 10, 7, 9, 8], estagio: "Operacional" },
-            { id: 'biopulse', nivel: 'interesse', nome: "BioPulse", setor: "Agro / Bio", vertical: "AGRO", tese: "A BioPulse resolve o trilema da agricultura moderna: resiliência climática, redução de custos e descarbonização. Através de uma plataforma biotecnológica multilinear (bactérias, fungos e microalgas), a companhia entrega 'seguros biológicos' que permitem ao produtor manter a produtividade sob estresse hídrico extremo, ao mesmo tempo em que reduz a dependência de fertilizantes sintéticos importados e minimiza a pegada de carbono da operação agrícola.", moat: "O diferencial reside na Biotecnologia Descentralizada. Diferente dos players tradicionais que sofrem com a degradação de produtos vivos em logísticas longas, a BioPulse instala biofábricas 'on-site' ou em polos estratégicos.", tracao: "Consolidação operacional com planta industrial em Barueri-SP otimizada. Lançamento de 3 novos produtos biológicos e expansão da base de clientes B2B. Receita em fase de escala acelerada com meta de crescimento de 150% em 2027.", riscos: "Os principais desafios residem na complexidade de execução da expansão geográfica das UPBs e no 'risco de educação' do mercado, que ainda é fortemente influenciado pela indústria química tradicional.", veredito: "Ativo de alta prioridade estratégica para o portfólio de Inovação Agro. A BioPulse não é apenas uma empresa de insumos, mas uma plataforma logística-biotecnológica. O modelo de biofábricas descentralizadas cria uma barreira de entrada (moat) geográfica e operacional difícil de ser batida por grandes multinacionais centralizadas.", scores: [8, 7, 9, 10, 7], estagio: "Seed" }
+            // Maior Interesse (Incluindo BioPulse Otimizada)
+            { id: 'eforth', nivel: 'interesse', nome: "E-Forth", setor: "E-Mobility", vertical: "ENERGIA", tese: "Resolve o maior gargalo para a adoção em massa de veículos elétricos (EVs): o risco de desvalorização do ativo usado. Ao garantir a saúde e a vida útil da bateria pós-garantia de fábrica, a E-Forth evita o descarte precoce de veículos e baterias, consolidando a economia circular no setor automotivo.", moat: "Barreira de dados e certificação. Utiliza algoritmos de predição de State-of-Health (SoH) baseados em telemetria real. O selo 'Battery Assisted' cria um padrão de confiança digital que funciona como um 'Score de Crédito' para o valor de revenda do carro elétrico.", tracao: "Aporte inicial de R$ 2 milhões para lançamento do modelo inédito. Operação em expansão nacional com meta de atingir 25 mil veículos (5% da frota elegível) até fevereiro de 2026. Parcerias em andamento com frotistas logísticos e seguradoras.", founders: "Fundada pelos empresários Ricardo Ceruli (CEO), Cassio Ceruli e Fabricio Barroca, com vasta experiência na redução de fricções de mercado e implementação de modelos de assinatura em setores complexos.", veredito: "Veredito: Investimento tático para 2026, capturando o fim das garantias das primeiras grandes frotas elétricas do Brasil. Riscos: Dependência da velocidade de eletrificação nacional e da abertura de dados técnicos por parte das montadoras (OEMs)", scores: [7, 8, 8, 9, 8], estagio: "Seed" },
+            { id: 'recicli', nivel: 'interesse', nome: "Recicli", setor: "Circular / Bio", vertical: "CIRCULAR", tese: "A Recicli ataca o iminente colapso de escassez de metais críticos. Ao recuperar ouro, prata, cobre e lítio de resíduos eletrônicos e baterias, a startup viabiliza uma 'mina infinita' dentro das cidades. O impacto é core: reduz a mineração extrativa degradante e diminui a pegada de carbono industrial em mais de 80% comparado aos processos térmicos tradicionais.", moat: "Diferencial tecnológico em Biometalurgia Patenteada. Enquanto concorrentes usam processos químicos tóxicos ou fundição (alto CAPEX), a Recicli utiliza micro-organismos customizados para extrair metais nobres com taxa de recuperação superior a 85% e baixo custo operacional (OPEX).", tracao: "Crescimento de 320% no faturamento em 2023 (R$ 1,03 milhão). Possui contratos de PD&I e parcerias estratégicas com gigantes como Stellantis (recuperação de metais de baterias de EVs) e Novo Nordisk. Planta piloto operacional e estruturando nova captação para expansão em 2025/2026.", founders: "Liderada por Flávio Costa e Ricardo Rodrigues, executivos com forte background técnico e trânsito em grandes corporações industriais, suportados por uma equipe de biólogos moleculares e engenheiros de materiais..", veredito: "Veredito: Ativo de alta densidade técnica com barreira biológica que protege as margens contra recicladoras mecânicas. É peça-chave para a autonomia mineral nacional. Riscos: Complexidade logística da coleta capilarizada e volatilidade internacional dos preços das commodities metálicas."", scores: [8, 6, 8, 10, 7], estagio: "Pre-Seed" },
+            { id: 'gsr', nivel: 'interesse', nome: "GSR Baterias", setor: "Circular / Energy", vertical: "CIRCULAR", tese: "Liderança em 'Second Life' para logística pesada. Recupera baterias industriais (empilhadeiras) que seriam descartadas, estendendo sua vida útil em até 10 anos. O impacto é a mitigação imediata de passivos ambientais de chumbo e lítio em grandes centros de distribuição.", moat: "Expertise acumulada de quase 40 anos no setor. O GSR Lab detém tecnologia proprietária de des-sulfatação química e diagnósticos avançados que permitem recuperar elementos que concorrentes dão como condenados. Capacidade única de conversão de frotas de chumbo para lítio com gestão térmica superior.", tracao: "Operação consolidada desde 2009 com faturamento recorrente. 100% homologada nos órgãos ambientais. Atende as principais indústrias e dealers de empilhadeiras do Brasil, com forte dominância na região Sul.", founders: "Empresa de origem familiar com sucessão profissionalizada liderada por Rodolfo (Diretor de Operações), unindo conhecimento técnico de 'chão de fábrica' com visão estratégica de economia circular.", veredito: "Veredito: Ativo 'camelo' (gerador de caixa e resiliente). É a solução prática de ESG para o setor logístico. Riscos: Transição tecnológica acelerada para novas químicas de bateria que possam limitar as técnicas atuais de recondicionamento e necessidade de expansão geográfica rápida para o Sudeste/Centro-Oeste.", scores: [6, 10, 7, 9, 8], estagio: "Operacional" },
+            { 
+                id: 'biopulse', 
+                nivel: 'interesse', 
+                nome: "BioPulse", 
+                setor: "Agro Tech / Bio", 
+                vertical: "AGRO", 
+                tese: "Plataforma biotecnológica multilinear para resiliência climática. Entrega 'seguros biológicos' via microrganismos frescos (bactérias, fungos e algas) para garantir produtividade sob estresse hídrico.", 
+                moat: "Biotecnologia Descentralizada (UPB). Modelo on-site que elimina shelf-life e custo logístico de água, permitindo a customização de biomas e isolamento de cepas nativas específicas por região.", 
+                tracao: "Planta em Barueri-SP otimizada. Lançamento de 3 novos produtos. Início do piloto UPB com comprovação de ganho de resiliência em campo. Meta de expansão acelerada (+150% em 2027).", 
+                founders: "Equipe multidisciplinar liderada por especialistas em biotecnologia e executivos com histórico de escala no agronegócio.", 
+                veredito: "Veredito: Ativo de alta prioridade. O modelo de biofábricas descentralizadas cria uma barreira geográfica intransponível para grandes multinacionais. Riscos: Complexidade na execução da expansão UPB e risco de educação do mercado tradicional; necessidade de validar rastreabilidade de carbono em tempo real.", 
+                scores: [9, 8, 9, 10, 9], 
+                estagio: "Seed/Scale" 
+            }
         ];
 
         let radarChart = null;
@@ -162,8 +173,6 @@
 
         function filterStartups(nivel) {
             currentFilter = nivel;
-            
-            // Atualizar Botões
             const btnInicial = document.getElementById('btn-inicial');
             const btnInteresse = document.getElementById('btn-interesse');
             
@@ -176,8 +185,6 @@
             }
 
             renderList();
-            
-            // Resetar View do Memo se mudar filtro
             document.getElementById('emptyState').classList.remove('hidden');
             document.getElementById('memoDetails').classList.add('hidden');
         }
@@ -185,7 +192,6 @@
         function renderList() {
             const list = document.getElementById('startupList');
             list.innerHTML = "";
-            
             const filtered = startups.filter(s => s.nivel === currentFilter);
             document.getElementById('count-badge').innerText = filtered.length;
 
@@ -224,7 +230,7 @@
             document.getElementById('memoThesis').innerText = s.tese;
             document.getElementById('memoMoat').innerText = s.moat;
             document.getElementById('memoTraction').innerText = s.tracao;
-            document.getElementById('memoRisks').innerText = s.riscos;
+            document.getElementById('memoFounders').innerText = s.founders;
             document.getElementById('memoVerdict').innerText = s.veredito;
 
             updateChart(s);
